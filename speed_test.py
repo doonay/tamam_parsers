@@ -1,4 +1,5 @@
 import time
+import asyncio
 import ps_parser
 import async_ps_parser
 import async_ps_parser_optimized
@@ -14,15 +15,18 @@ def timer_decorator(func):
     return wrapper
 
 @timer_decorator
-def speed_test():
+def speed_test1():
     ps_parser.ps_parser()
 
 @timer_decorator
-def speed_test():
-    async_ps_parser.ps_parser()
+def speed_test2():
+    asyncio.run(async_ps_parser.ps_parser())
 
 @timer_decorator
-def speed_test():
-    async_ps_parser_optimized.ps_parser()
+def speed_test3():
+    asyncio.run(async_ps_parser_optimized.ps_parser())
 
-speed_test() # Вызов функции с замером времени выполнения
+# Вызов функций с замером времени выполнения
+speed_test1()
+#speed_test2()
+#speed_test3()

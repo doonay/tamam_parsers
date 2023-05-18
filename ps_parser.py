@@ -158,7 +158,7 @@ def ps_parser():
                 last_modified
                 )
             
-            print(f"[INFO] '[', game_count, '/', last_game, ']', {title} was successfully inserted")
+            print(f'[INFO] [{game_count}/{last_game}] "{title}" was successfully inserted')
             game_count += 1
         page_count += 1
 

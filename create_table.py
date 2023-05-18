@@ -31,8 +31,8 @@ def main(tablename):
                 f"""
                 CREATE TABLE {tablename}(
                     id serial PRIMARY KEY,
-                    ps_id varchar(100) NOT NULL,
-                    title varchar(100) NOT NULL,
+                    ps_id varchar(250) NOT NULL,
+                    title varchar(250) NOT NULL,
                     platforms varchar(10)[],
                     base_price integer NOT NULL,
                     discounted_price integer,

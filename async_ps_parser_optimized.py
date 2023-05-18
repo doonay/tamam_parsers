@@ -34,8 +34,18 @@ async def db_insert(
         )
 
         if existing_game:
-            # Game already exists, skip insertion
-            return
+            # Game already exists, check price
+            not_actual_price = await connection.fetchrow(
+                """
+                SELECT ps_id FROM ps_games WHERE ps_id = $1;
+                """,
+                str(discounted_price)
+            )
+            if not_actual_price:
+                print(title, 'Old price is: ', str(discounted_price))
+            else:
+                # Price is up to date
+                return
 
         await connection.execute(
             """
