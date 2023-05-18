@@ -37,10 +37,8 @@ def main(tablename):
                     base_price integer NOT NULL,
                     discounted_price integer,
                     discount integer,
-                    is_free boolean DEFAULT false,
-                    is_exclusive boolean DEFAULT false,
-                    is_tied_to_subscription boolean DEFAULT false,
-                    img varchar(250) NOT NULL
+                    img varchar(250) NOT NULL,
+                    last_modified timestamp
                 );
                 """
             )
