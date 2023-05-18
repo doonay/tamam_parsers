@@ -95,7 +95,7 @@ def ps_parser():
         try:
             last_game = int(json_data['props']['apolloState'][f'$CategoryGrid:44d8bb20-653e-431e-8ad0-c0a365f68d2f:tr-tr:{str(game_count)}:24.pageInfo']['totalCount'])
         except KeyError:
-            print(f'Скорее всего это финиш и последняя страница не имеет 24 игры.\nlast_game = {last_game}, game_count = {game_count}, page_count = {page_count}')
+            print(f'Job is done!\nlast_game = {last_game}, game_count = {game_count}, page_count = {page_count}')
             break
 
         temp_products = json_data['props']['apolloState'][f'CategoryGrid:44d8bb20-653e-431e-8ad0-c0a365f68d2f:tr-tr:{str(game_count)}:24']['products']
