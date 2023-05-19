@@ -1,6 +1,6 @@
 import time
 import asyncio
-import ps_parser
+import parser_playstation
 import async_ps_parser
 import async_ps_parser_optimized
 
@@ -16,7 +16,7 @@ def timer_decorator(func):
 
 @timer_decorator
 def speed_test1():
-    ps_parser.ps_parser()
+    parser_playstation.ps_parser()
 
 @timer_decorator
 def speed_test2():
