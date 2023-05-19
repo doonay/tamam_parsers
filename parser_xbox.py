@@ -54,7 +54,7 @@ def xbox_parser():
       discount = 0
     last_modified = datetime.now()
 
-    insert_in_tables.db_insert(
+    db_insert(
       'xbox',
       xbox_id,
       title,
