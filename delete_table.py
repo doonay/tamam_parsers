@@ -1,11 +1,16 @@
-#!/usr/bin/python
-# -*- coding: UTF-8 -*-
-
+'''
+Утилита удаления таблицы из базы
+Параметром принимает имя компании
+Команда для запуска например:
+python delete_table playstation
+или
+python delete_table xbox
+'''
 import sys
 import psycopg2
 from config import host, user, password, db_name
 
-def main(tablename):
+def main(company):
     try:
         # connect to exist database
         connection = psycopg2.connect(
@@ -16,21 +21,12 @@ def main(tablename):
         )
         
         connection.autocommit = True 
-
-        with connection.cursor() as cursor:
-            cursor.execute(
-                "SELECT version()"
-            )
-            version_row = cursor.fetchone()  # Получение одной записи результата
-            server_version = version_row[0]  # Обращение к первому элементу записи (версии)
-            print("Server version:", server_version)  # Вывод версии сервера
-            
         
         # delete a table
         with connection.cursor() as cursor:
             cursor.execute(
                 f"""
-                DROP TABLE {tablename};
+                DROP TABLE {company}_games;
                 """
             )
 
@@ -47,5 +43,7 @@ if __name__ == '__main__':
     if len (sys.argv) == 2:
         main(sys.argv[1])
     else:
-        print("Table name not specified. Please provide a table name when executing the script.")
-        print("For example: python delete_table.py tablename")
+        print("Company name not specified. Please provide a company name when executing the script.")
+        print("For example:")
+        print("\tpython delete_table.py xbox")
+        print("\tpython delete_table.py playstation")

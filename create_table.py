@@ -1,11 +1,16 @@
-#!/usr/bin/python
-# -*- coding: UTF-8 -*-
-
+'''
+Утилита создания таблицы в базе
+Параметром принимает имя компании
+Команда для запуска например:
+python delete_table playstation
+или
+python delete_table xbox
+'''
 import sys
 import psycopg2
 from config import host, user, password, db_name
 
-def main(tablename):
+def main(company):
     try:
         # connect to exist database
         connection = psycopg2.connect(
@@ -29,13 +34,13 @@ def main(tablename):
         with connection.cursor() as cursor:
             cursor.execute(
                 f"""
-                CREATE TABLE {tablename}(
+                CREATE TABLE {company}_games(
                     id serial PRIMARY KEY,
-                    ps_id varchar(250) NOT NULL,
+                    {company}_id varchar(250) NOT NULL,
                     title varchar(250) NOT NULL,
                     platforms varchar(10)[],
-                    base_price integer NOT NULL,
-                    discounted_price integer,
+                    base_price numeric(10, 2) NOT NULL,
+                    discounted_price numeric(10, 2),
                     discount integer,
                     img varchar(250) NOT NULL,
                     last_modified timestamp
@@ -56,5 +61,7 @@ if __name__ == '__main__':
     if len (sys.argv) == 2:
         main(sys.argv[1])
     else:
-        print("Table name not specified. Please provide a table name when executing the script.")
-        print("For example: python create_table.py tablename")
+        print("Company name not specified. Please provide a company name when executing the script.")
+        print("For example:")
+        print("\tpython create_table.py xbox")
+        print("\tpython create_table.py playstation")
