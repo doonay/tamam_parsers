@@ -26,4 +26,4 @@ class Game(Model):
 
     @classmethod
     def table_name(cls, company):
-        return f'{cls._meta.database}_{company}_games'
+        return f'{company}_games'

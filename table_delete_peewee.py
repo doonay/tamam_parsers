@@ -1,6 +1,6 @@
 import sys
 from peewee import *
-from models import Game
+from models_peewee import Game
 
 def main(company):
     try:
@@ -8,7 +8,7 @@ def main(company):
         with Game._meta.database.connection():
             table_name = f'{company}_games'
             Game._meta.table_name = table_name  # Установка имени таблицы для модели
-            Game.create_table()
+            Game.drop_table()
         
         print("[INFO] Table deleted successfully")
 
@@ -24,5 +24,5 @@ if __name__ == '__main__':
     else:
         print("Company name not specified. Please provide a company name when executing the script.")
         print("For example:")
-        print("\tpython delete_table.py xbox")
-        print("\tpython delete_table.py playstation")
+        print("\tpython table_delete_peewee.py xbox")
+        print("\tpython table_delete_peewee.py playstation")

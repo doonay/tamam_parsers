@@ -22,21 +22,13 @@ def main(company):
         
         connection.autocommit = True 
 
-        with connection.cursor() as cursor:
-            cursor.execute(
-                "SELECT version()"
-            )
-            version_row = cursor.fetchone()  # Получение одной записи результата
-            server_version = version_row[0]  # Обращение к первому элементу записи (версии)
-            print("Server version:", server_version)  # Вывод версии сервера
-        
         # create new table
         with connection.cursor() as cursor:
             cursor.execute(
                 f"""
                 CREATE TABLE {company}_games(
                     id serial PRIMARY KEY,
-                    {company}_id varchar(250) NOT NULL,
+                    game_id varchar(250) NOT NULL,
                     title varchar(250) NOT NULL,
                     platforms varchar(10)[],
                     base_price numeric(10, 2) NOT NULL,
