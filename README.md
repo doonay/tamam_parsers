@@ -1,5 +1,5 @@
 Создаем таблицы в PostgreSQL базе:<br/>
-> python table_create_alchemy.py <company><br/>
+> python table_create_alchemy.py \<company\><br/>
 Например: python table_create_alchemy.py playstation<br/>
 (table_delete_alchemy.py соответственно удаляет таблицы)<br/>
 В базе создается таблица playstation_games<br/>
