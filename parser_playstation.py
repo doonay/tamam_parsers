@@ -1,59 +1,8 @@
-import psycopg2
-from config import host, user, password, db_name
-
+#from config import host, user, password, db_name
 from bs4 import BeautifulSoup
 import requests
 import json
-
-from datetime import datetime
-
-def db_insert(
-        ps_id,
-        title,
-        platforms,
-        base_price,
-        discounted_price,
-        discount,
-        img,
-        last_modified):
-    try:
-        # connect to exist database
-        connection = psycopg2.connect(
-            host=host,
-            user=user,
-            password=password,
-            database=db_name,
-        )
-        
-        connection.autocommit = True 
-
-        # insert data into a table
-        with connection.cursor() as cursor:
-            cursor.execute(
-                """
-                INSERT INTO ps_games (
-                    ps_id,
-                    title,
-                    platforms,
-                    base_price,
-                    discounted_price,
-                    discount,
-                    img,
-                    last_modified
-                ) VALUES
-                (%s, %s, %s, %s, %s, %s, %s, %s);
-                """,
-                (ps_id, title, platforms, base_price, discounted_price, discount, img, last_modified)
-            )
-        
-        #print(f"[INFO] {title} was successfully inserted")
-
-    except Exception as _ex:
-        print("[INFO] Error while working with PostgreSQL", _ex)
-    finally:
-        if connection:
-            connection.close()
-            #print("[INFO] PostgreSQL connection closed")
+from insert_in_tables import db_insert
 
 def ps_parser():
     SESSION = requests.session()
@@ -81,15 +30,11 @@ def ps_parser():
     page_count = 1
 
     while game_count <= last_game:
-        # Внимание! В РФ адрес может быть другой!
         url = f'https://store.playstation.com/tr-tr/category/44d8bb20-653e-431e-8ad0-c0a365f68d2f/{page_count}'
         r = SESSION.get(url, headers=headers)
         soup = BeautifulSoup(r.text, 'lxml')
-            
-        #last_game = int(soup.find('div', {'class': "psw-t-body psw-c-t-2"}).get_text().split(' ')[0])
-        #print(soup.find('div', {'class': ["psw-t-body", "psw-c-t-2"]}))
-            
-        json_string = soup.find('script', {'id': "__NEXT_DATA__"}).get_text() #id="__NEXT_DATA__" type="application/json">
+                        
+        json_string = soup.find('script', {'id': "__NEXT_DATA__"}).get_text()
         json_data = json.loads(json_string)
             
         try:
@@ -104,58 +49,49 @@ def ps_parser():
             products.append(p['id'])
 
         for product in products:
+            company = 'playstation'
+            game_id = json_data['props']['apolloState'][product]['id']
+            title = json_data['props']['apolloState'][product]['name']
+            platforms = json.dumps(json_data['props']['apolloState'][product]['platforms']['json'])
 
-            price_id = json_data['props']['apolloState'][product]['price']['id']
-            if json_data['props']['apolloState'][price_id]['basePrice'] == 'Uygun Değil':
+            _price_id = json_data['props']['apolloState'][product]['price']['id']
+            if json_data['props']['apolloState'][_price_id]['basePrice'] == 'Uygun Değil':
                 #print('[', game_count, '/', last_game, ']','Нет в наличии', title)
                 game_count += 1
                 continue
-            elif json_data['props']['apolloState'][price_id]['basePrice'] == 'Ücretsiz':
+            elif json_data['props']['apolloState'][_price_id]['basePrice'] == 'Ücretsiz':
                 #print('[', game_count, '/', last_game, ']','Бесплатно', title)
                 game_count += 1
                 continue
             else:    
-                base_price = int(json_data['props']['apolloState'][price_id]['basePrice'].strip().replace(',','').replace('.','').replace(' TL', ''))
-            #print('base_price:', type(base_price),base_price)
+                base_price = int(json_data['props']['apolloState'][_price_id]['basePrice'].strip().replace(',','').replace('.','').replace(' TL', ''))/100
 
             try:
-                discount = int(json_data['props']['apolloState'][price_id]['discountText'].strip().replace('-%', ''))
-                if json_data['props']['apolloState'][price_id]['discountedPrice'].strip() == 'Dahil':
+                discount = int(json_data['props']['apolloState'][_price_id]['discountText'].strip().replace('-%', ''))
+                if json_data['props']['apolloState'][_price_id]['discountedPrice'].strip() == 'Dahil':
                     #print('[', game_count, '/', last_game, ']','Включая (дословно)', title)
                     discounted_price = 0
                 else:
-                    discounted_price = int(json_data['props']['apolloState'][price_id]['discountedPrice'].strip().replace(',','').replace('.','').replace(' TL', ''))
+                    discounted_price = int(json_data['props']['apolloState'][_price_id]['discountedPrice'].strip().replace(',','').replace('.','').replace(' TL', ''))/100
                     #print('discounted_price:', type(discounted_price),discounted_price)
             except AttributeError:
                 #print(title, 'пишет, что скидки нет. Проверить!')
                 discount = 0
                 discounted_price = base_price
-                #print('discounted_price:', type(discounted_price),discounted_price)
-                #print('discount', type(discount),discount)
 
-            ps_id = json_data['props']['apolloState'][product]['id']
-            #print(type(ps_id), ps_id)
-            title = json_data['props']['apolloState'][product]['name']
-            #print(type(title),title)
-            platforms = json_data['props']['apolloState'][product]['platforms']['json']
-            #print(type(platforms), platforms)
-
-            media_id = json_data['props']['apolloState'][product]['media'][-1]['id']
-            img = json_data['props']['apolloState'][media_id]['url']
-            #print('img', type(img),img)
             
-            last_modified = datetime.now()
-            #print('last_modified', type(last_modified),last_modified)
+            _media_id = json_data['props']['apolloState'][product]['media'][-1]['id']
+            img = json_data['props']['apolloState'][_media_id]['url']
 
             db_insert(
-                ps_id,
+                company,
+                game_id,
                 title,
                 platforms,
                 base_price,
                 discounted_price,
                 discount,
-                img,
-                last_modified
+                img
                 )
             
             print(f'[INFO] [{game_count}/{last_game}] "{title}" was successfully inserted')
@@ -164,18 +100,16 @@ def ps_parser():
 
 
 if __name__ == '__main__':
-    pass
-    # tests
     '''
     db_insert(
+        'playstation',
         'EP7072-CUSA37356_00-ZOOLREDIMENSIOND',
         'Zool Redimensioned',
-        ['PS4'],
+        json.dumps(['PS4']),
         7900,
         7900,
         0,
-        'https://image.api.playstation.com/vulcan/ap/rnd/202303/2920/6a8994670918ac434bf1ca56e932264892847fce7c38e73b.png',
-        '2023-05-18 12:18:31.915173'
+        'https://image.api.playstation.com/vulcan/ap/rnd/202303/2920/6a8994670918ac434bf1ca56e932264892847fce7c38e73b.png'
     )
     '''
-    #ps_parser()
+    ps_parser()

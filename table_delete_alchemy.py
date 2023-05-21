@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker
 from models_alchemy import Game
 from config import db_name, user, password, host, port
 
-def main(company):
+def delete_table(company):
     engine = create_engine(f'postgresql://{user}:{password}@{host}:{port}/{db_name}')
     metadata = MetaData()
     metadata.reflect(bind=engine)
@@ -30,7 +30,7 @@ def main(company):
 
 if __name__ == '__main__':
     if len(sys.argv) == 2:
-        main(sys.argv[1])
+        delete_table(sys.argv[1])
     else:
         print("Company name not specified. Please provide a company name when executing the script.")
         print("For example:")
