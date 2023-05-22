@@ -1,7 +1,7 @@
 import requests
 import json
 from datetime import datetime
-from insert_in_tables import db_insert
+from insert_to_tables import db_insert
 
 def xbox_parser():
   SESSION = requests.session()

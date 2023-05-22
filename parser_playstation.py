@@ -2,7 +2,7 @@
 from bs4 import BeautifulSoup
 import requests
 import json
-from insert_in_tables import db_insert
+from insert_to_tables import db_insert
 
 def ps_parser():
     SESSION = requests.session()
