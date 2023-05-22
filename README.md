@@ -1,6 +1,5 @@
 # Парсеры, которые запускаются по плану и собирают информацию по играм в базу PostgreSQL
-Создаем таблицы в PostgreSQL базе:<br/>
-python table_create_alchemy.py \<company\><br/>
+Создаем таблицы в PostgreSQL базе: python table_create_alchemy.py \<company\><br/>
 Например:
 > python table_create_alchemy.py playstation<br/>
 
