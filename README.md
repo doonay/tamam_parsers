@@ -1,8 +1,14 @@
 Создаем таблицы в PostgreSQL базе:<br/>
-> python table_create_alchemy.py \<company\><br/>
-Например: python table_create_alchemy.py playstation<br/>
+python table_create_alchemy.py \<company\><br/>
+Например:
+> python table_create_alchemy.py playstation
+После чего в базе создается таблица playstation_games<br/>
 (table_delete_alchemy.py \<company\> соответственно удаляет таблицы)<br/>
-В базе создается таблица playstation_games
+В настоящее время готовы парсеры:<br/>
+playstation<br/>
+xbox<br/>
+В планах:<br/>
+epic, battlenet, gog, nintendo, steam<br/>
 
 Запускаем планировщик:<br/>
 > python sheduler.py
