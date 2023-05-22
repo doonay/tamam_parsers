@@ -1,3 +1,4 @@
+# Парсеры, которые запускаются по плану и собирают информацию по играм в базу PostgreSQL
 Создаем таблицы в PostgreSQL базе:<br/>
 python table_create_alchemy.py \<company\><br/>
 Например:
@@ -14,7 +15,7 @@ epic, battlenet, gog, nintendo, steam<br/>
 Запускаем планировщик:<br/>
 > python sheduler.py
 
-# Тут будут замеры асинхронных парсеров:
+## Тут будут замеры асинхронных парсеров:
 Функция parser_playstation.py выполнилась за 1052.337182044983 секунд.<br/>
 Функция parser_playstation_async.py выполнилась за 1264.0373182296753 секунд.<br/>
 Функция parser_playstation_async_optimized.py выполнилась за 1215.7589137554169 секунд.<br/>
