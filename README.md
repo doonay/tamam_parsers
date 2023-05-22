@@ -1,5 +1,5 @@
 ## Парсеры, которые запускаются по плану и собирают информацию по играм в базу PostgreSQL
-!sheme.png
+![](sheme.png)
 Создаем таблицы в PostgreSQL c помощью скрипта: python table_create_alchemy.py \<company\><br/>
 Например:
 > python table_create_alchemy.py playstation<br/>
