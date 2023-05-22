@@ -1,7 +1,8 @@
 Создаем таблицы в PostgreSQL базе:<br/>
 python table_create_alchemy.py \<company\><br/>
 Например:
-> python table_create_alchemy.py playstation
+> python table_create_alchemy.py playstation<br/>
+
 После чего в базе создается таблица playstation_games<br/>
 (table_delete_alchemy.py \<company\> соответственно удаляет таблицы)<br/>
 В настоящее время готовы парсеры:<br/>
