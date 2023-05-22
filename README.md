@@ -1,6 +1,22 @@
-# Asynchronous parsers that are launched according to a timer.
-Функция ps_parser выполнилась за 1052.337182044983 секунд.<br/>
-Функция async_ps_parser выполнилась за 1264.0373182296753 секунд.<br/>
-Функция async_ps_parser_optimized выполнилась за 1215.7589137554169 секунд.<br/>
+# Парсеры, которые запускаются по плану и собирают информацию по играм в базу PostgreSQL
+Создаем таблицы в PostgreSQL c помощью скрипта: python table_create_alchemy.py \<company\><br/>
+Например:
+> python table_create_alchemy.py playstation<br/>
+
+После чего в базе создается таблица **playstation_games**<br/>
+(скрипт table_delete_alchemy.py \<company\> соответственно удаляет таблицы)<br/>
+В настоящее время готовы парсеры:<br/>
+playstation<br/>
+xbox<br/>
+В планах:<br/>
+epic, battlenet, gog, nintendo, steam<br/>
+
+Запускаем планировщик:<br/>
+> python sheduler.py
+
+## Тут будут замеры асинхронных парсеров:
+Функция parser_playstation.py выполнилась за 1052.337182044983 секунд.<br/>
+Функция parser_playstation_async.py выполнилась за 1264.0373182296753 секунд.<br/>
+Функция parser_playstation_async_optimized.py выполнилась за 1215.7589137554169 секунд.<br/>
 <br/>
-¯\\_(ツ)_/¯<br/>
+¯\\_(ツ)_/¯ смысла в асинхронности для playstation нет<br/>
