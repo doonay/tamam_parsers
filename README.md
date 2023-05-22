@@ -3,7 +3,7 @@
 Например:
 > python table_create_alchemy.py playstation<br/>
 
-После чего в базе создается таблица playstation_games<br/>
+После чего в базе создается таблица **playstation_games**<br/>
 (table_delete_alchemy.py \<company\> соответственно удаляет таблицы)<br/>
 В настоящее время готовы парсеры:<br/>
 playstation<br/>
