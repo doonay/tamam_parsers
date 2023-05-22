@@ -1,10 +1,10 @@
 # Парсеры, которые запускаются по плану и собирают информацию по играм в базу PostgreSQL
-Создаем таблицы в PostgreSQL базе: python table_create_alchemy.py \<company\><br/>
+Создаем таблицы в PostgreSQL c помощью скрипта: python table_create_alchemy.py \<company\><br/>
 Например:
 > python table_create_alchemy.py playstation<br/>
 
 После чего в базе создается таблица **playstation_games**<br/>
-(table_delete_alchemy.py \<company\> соответственно удаляет таблицы)<br/>
+(скрипт table_delete_alchemy.py \<company\> соответственно удаляет таблицы)<br/>
 В настоящее время готовы парсеры:<br/>
 playstation<br/>
 xbox<br/>
